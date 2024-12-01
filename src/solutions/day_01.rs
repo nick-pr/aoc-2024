@@ -61,7 +61,7 @@ impl Solution for Day01 {
 
         let mut solution: usize = 0;
         for left_num in self.left_list.iter() {
-            solution += (*left_num * right_list_occurances.remove(left_num).unwrap_or(0)) as usize
+            solution += (*left_num * right_list_occurances.get(left_num).unwrap_or(&0)) as usize
         }
 
         Some(solution)
