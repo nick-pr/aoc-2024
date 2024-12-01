@@ -51,13 +51,11 @@ impl Solution for Day01 {
 
     fn part_2(&self) -> Option<usize> {
         let mut right_list_occurances: HashMap<u32, u32> = HashMap::new();
-
         for right_num in self.right_list.iter() {
             let count: u32 = right_list_occurances
                 .get(right_num)
                 .map(|e| e.to_owned())
                 .unwrap_or_default();
-
             right_list_occurances.insert(*right_num, count + 1);
         }
 
