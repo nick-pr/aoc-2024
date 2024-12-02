@@ -10,28 +10,56 @@ fn main() {
         return;
     }
 
-    match args[1].as_ref() {
-        "day-01" => {
-            let solution = Day01::prepare();
-            run_solution(solution)
-        }
+    let solution: SolutionRunner = match args[1].as_ref() {
+        "day-01" => SolutionRunner::day(1)
+            .set_part_1(day_01::part_1)
+            .set_part_2(day_01::part_2),
         _ => {
-            eprintln!("day not found")
+            eprintln!("day not found");
+            return;
         }
-    }
+    };
+    solution.run();
 }
 
-fn run_solution<S: Solution>(solution: S) {
-    println!("-------------------");
-    println!("Solution for Day {:0>2}", S::DAY_NUMBER);
-    println!("-------------------");
-    match solution.part_1() {
-        Some(solution) => println!("Part 1: {}", solution),
-        None => println!("Part 1: Unsolved"),
-    };
+struct SolutionRunner {
+    day_number: u8,
+    input: String,
+    part_1: Option<fn(input: &str) -> usize>,
+    part_2: Option<fn(input: &str) -> usize>,
+}
 
-    match solution.part_2() {
-        Some(solution) => println!("Part 2: {}", solution),
-        None => println!("Part 2: Unsolved"),
-    };
+impl SolutionRunner {
+    fn day(day_number: u8) -> Self {
+        Self {
+            day_number,
+            input: advent_of_code_2024::get_input(&format!("day-{:0>2}", day_number)),
+            part_1: None,
+            part_2: None,
+        }
+    }
+    fn run(self) {
+        println!("-------------------");
+        println!("Solution for Day {:0>2}", self.day_number);
+        println!("-------------------");
+        match self.part_1 {
+            Some(solution) => println!("Part 1: {}", solution(&self.input)),
+            None => println!("Part 1: Unsolved"),
+        };
+
+        match self.part_2 {
+            Some(solution) => println!("Part 2: {}", solution(&self.input)),
+            None => println!("Part 2: Unsolved"),
+        };
+    }
+
+    fn set_part_1(mut self, p1_solution: fn(input: &str) -> usize) -> Self {
+        self.part_1 = Some(p1_solution);
+        self
+    }
+
+    fn set_part_2(mut self, p2_solution: fn(input: &str) -> usize) -> Self {
+        self.part_2 = Some(p2_solution);
+        self
+    }
 }
