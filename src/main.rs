@@ -14,6 +14,9 @@ fn main() {
         "day-01" => SolutionRunner::day(1)
             .set_part_1(day_01::part_1)
             .set_part_2(day_01::part_2),
+
+        "day-02" => SolutionRunner::day(2).set_part_1(day_02::part_1),
+
         _ => {
             eprintln!("day not found");
             return;
